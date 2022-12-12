@@ -1,0 +1,41 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Backend - All services",
+      "dependsOrder": "sequence",
+      "dependsOn": ["kill ports", "Backend - batabase, auth"]
+    },
+    {
+      "label": "Backend - batabase, auth",
+      "dependsOrder": "parallel",
+      "dependsOn": ["Backend - auth", "Backend - database"]
+    },
+    {
+      "label": "Backend - auth",
+      "type": "npm",
+      "path": "./backend",
+      "script": "start:dev:auth"
+    },
+    {
+      "label": "Backend - database",
+      "type": "npm",
+      "path": "./backend",
+      "script": "start:dev:database"
+    },
+    {
+      "label": "kill ports",
+      "dependsOn": ["Backend - kill ports"],
+      "presentation": {
+        "clear": true
+      }
+    },
+    {
+      "label": "Backend - kill ports",
+      "type": "shell",
+      "command": "npm install --global kill-port && kill-port --port 3000,3001 && clear"
+    }
+  ]
+}
